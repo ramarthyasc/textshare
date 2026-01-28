@@ -7,8 +7,8 @@ import helmet from 'helmet';
 import cors from 'cors';
 
 import type { NextFunction, ErrorRequestHandler } from 'express';
-import { apiRouter } from '../src/routers/api.router';
-import { apipasteHtmlGet } from '../src/controllers/api.controller';
+import { apiRouter } from './src/routers/api.router';
+import { apipasteHtmlGet } from './src/controllers/api.controller';
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next: NextFunction) => {
     if ((res as any).headersSent) {
