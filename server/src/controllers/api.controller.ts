@@ -31,7 +31,6 @@ interface IPastes {
 
 export async function apipastesPost(req: Request, res: Response, next: NextFunction) {
     const pastes: IPastes = req.body;
-    console.log(pastes);
 
     // Error responses
     if (!pastes.content || (typeof pastes.content !== "string") || (pastes.content === "")) {
@@ -105,10 +104,17 @@ interface IPasteGet {
 
 export async function apipasteGet(req: Request, res: Response, next: NextFunction) {
     const id = req.params.id;
+    let now: Date;
+    if (Number(process.env.TEST_MODE) === 1) {
+        const headerMs = req.get('x-test-now-ms');
+        now = new Date(Number(headerMs));
+    } else {
+        now = new Date();
+    }
 
     let pasterows: IPasteGet[] | undefined;
     if (typeof id === "string") {
-        pasterows = await checkPasteQuery(id);
+        pasterows = await checkPasteQuery(id, now);
     }
 
     if (!pasterows) {
@@ -118,7 +124,7 @@ export async function apipasteGet(req: Request, res: Response, next: NextFunctio
     } else {
 
         // If expired
-        if (pasterows[0].expires_at && (pasterows[0].expires_at < new Date())) {
+        if (pasterows[0].expires_at && (pasterows[0].expires_at < now)) {
             return res.status(404).json({ error: "Not found", message: "Paste not found" });
         }
 
@@ -149,9 +155,18 @@ export async function apipasteHtmlGet(req: Request, res: Response, next: NextFun
 
     const id = req.params.id;
 
+    let now: Date;
+    if (Number(process.env.TEST_MODE) === 1) {
+        const headerMs = req.get('x-test-now-ms');
+        now = new Date(Number(headerMs));
+    } else {
+        now = new Date();
+    }
+
+
     let pasterows: IPasteGet[] | undefined;
     if (typeof id === "string") {
-        pasterows = await checkPasteQuery(id);
+        pasterows = await checkPasteQuery(id, now);
     }
 
     if (!pasterows) {
@@ -161,7 +176,7 @@ export async function apipasteHtmlGet(req: Request, res: Response, next: NextFun
     } else {
 
         // If expired
-        if (pasterows[0].expires_at && (pasterows[0].expires_at < new Date())) {
+        if (pasterows[0].expires_at && (pasterows[0].expires_at < now)) {
             return res.status(404).json({ error: "Not found", message: "Paste not found" });
         }
 

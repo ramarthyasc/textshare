@@ -23,7 +23,7 @@ interface IPasteGet {
     expires_at: Date | null;
 }
 
-export async function checkPasteQuery(id: string) {
+export async function checkPasteQuery(id: string, now: Date) {
     const client = await pool.connect();
 
     try {
@@ -52,11 +52,10 @@ export async function checkPasteQuery(id: string) {
 
             //Delete if remaining_views is 0 or expiry is over (when expires_at is null, then it becomes false)
             if ((selectedRow.remaining_views !== null && selectedRow.remaining_views < 2) || (
-                selectedRow.expires_at && selectedRow.expires_at < new Date())
+                selectedRow.expires_at && selectedRow.expires_at < now)
             ) {
                 const deleteText = `DELETE FROM pastes
                                 WHERE id = $1 AND (remaining_views < 1 OR expires_at < $2)`;
-                const now = new Date();
                 const deleteValues = [id, now];
                 await client.query(deleteText, deleteValues);
             }
