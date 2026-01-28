@@ -23,7 +23,9 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next: NextFunction) =>
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-app.use(morgan("common"));
+if (process.env.NODE_ENV === "development") {
+    app.use(morgan("common"));
+}
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 

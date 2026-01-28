@@ -27,7 +27,6 @@ function App() {
     const [shareUrl, setShareUrl] = useState("https://");
 
     async function onSubmit(data: FormValues) {
-        console.log(data);
         try {
             const res = await fetch('/api/pastes', {
                 method: "POST",
