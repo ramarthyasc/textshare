@@ -13,8 +13,9 @@ interface IPastes {
     max_views?: number;
 }
 type FormValues = {
-    max_views?: number;
-    ttl_seconds?: number;
+    max_views?: number,
+    ttl_seconds?: number,
+    content: string,
 }
 
 function App() {
@@ -42,8 +43,13 @@ function App() {
                         <Field className="mt-5">
                             <FieldLabel htmlFor="textarea-message" className="text-2xl font-bold">New Paste</FieldLabel>
                             <Textarea className="h-100" id="textarea-message" placeholder="Type your paste here."
-                                name="content"
+                                {...register("content", {
+                                    required: "Content is required",
+                                })}
                             />
+                            <FieldDescription className="text-red-700">
+                                {errors.content?.message}
+                            </FieldDescription>
                             <div className="flex">
                                 {/* Expire */}
                                 <FieldGroup>
@@ -54,9 +60,9 @@ function App() {
                                                 className="w-80" type="number" id="fieldgroup-expire"
                                                 placeholder="Enter a Positive integer"
                                                 {...register("ttl_seconds", {
-                                                    valueAsNumber: true,
+                                                    setValueAs: (v) => (v === "" || Number.isNaN(v) ? undefined : Number(v)),
                                                     validate: (value) => {
-                                                        if (value === undefined || Number.isNaN(value)) { return true; }
+                                                        if (value === undefined) { return true; }
                                                         if (!Number.isInteger(value)) { return "Must be an integer"; }
                                                         if (value <= 0) { return "Must be greater than 0"; }
                                                         return true;
@@ -78,9 +84,9 @@ function App() {
                                                 placeholder="Enter a Positive Integer"
                                                 className="w-80"
                                                 {...register("max_views", {
-                                                    valueAsNumber: true,
+                                                    setValueAs: (v) => (v === "" || Number.isNaN(v) ? undefined : Number(v)),
                                                     validate: (value) => {
-                                                        if (value === undefined || Number.isNaN(value)) { return true; }
+                                                        if (value === undefined) { return true; }
                                                         if (!Number.isInteger(value)) { return "Must be an integer"; }
                                                         if (value <= 0) { return "Must be greater than 0"; }
                                                         return true;
