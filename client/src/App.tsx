@@ -1,35 +1,146 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useForm } from "react-hook-form";
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field"
+import { Textarea } from "@/components/ui/textarea";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { ThemeProvider } from "@/components/theme-provider"
+import { ModeToggle } from "./components/mode-toggle";
+import { Input } from "@/components/ui/input"
+import { useState } from "react";
+
+interface IPastes {
+    content: string;
+    ttl_seconds?: number;
+    max_views?: number;
+}
+type FormValues = {
+    max_views?: number;
+    ttl_seconds?: number;
+}
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const { register, handleSubmit, formState: { errors, isValid } } = useForm<FormValues>({
+        defaultValues: { max_views: undefined, ttl_seconds: undefined },
+        mode: "onChange"
+    })
+    const [shareUrl, setShareUrl] = useState("https://");
+
+    function onSubmit(data: FormValues) {
+        console.log("helooooo")
+        console.log(data);
+    }
+    return (
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+            <div className="flex justify-center">
+                <div className="relative w-100 md:w-300">
+                    <div className="absolute left-90 top-5 md:left-290">
+                        <ModeToggle />
+                    </div>
+
+
+                    <form action="submit" onSubmit={handleSubmit(onSubmit)}>
+                        <Field className="mt-5">
+                            <FieldLabel htmlFor="textarea-message" className="text-2xl font-bold">New Paste</FieldLabel>
+                            <Textarea className="h-100" id="textarea-message" placeholder="Type your paste here."
+                                name="content"
+                            />
+                            <div className="flex">
+                                {/* Expire */}
+                                <FieldGroup>
+                                    <Field>
+                                        <FieldLabel htmlFor="fieldgroup-expire">Paste Expiration (Seconds):</FieldLabel>
+                                        <div>
+                                            <Input
+                                                className="w-80" type="number" id="fieldgroup-expire"
+                                                placeholder="Enter a Positive integer"
+                                                {...register("ttl_seconds", {
+                                                    valueAsNumber: true,
+                                                    validate: (value) => {
+                                                        if (value === undefined || Number.isNaN(value)) { return true; }
+                                                        if (!Number.isInteger(value)) { return "Must be an integer"; }
+                                                        if (value <= 0) { return "Must be greater than 0"; }
+                                                        return true;
+                                                    }
+                                                })}
+                                            />
+                                        </div>
+                                        <FieldDescription className="text-red-700">
+                                            {errors.ttl_seconds?.message}
+                                        </FieldDescription>
+                                    </Field>
+                                    {/* View */}
+                                    <Field>
+                                        <FieldLabel htmlFor="fieldgroup-integer">Paste View limit:</FieldLabel>
+                                        <div>
+                                            <Input
+                                                id="fieldgroup-integer"
+                                                type="number"
+                                                placeholder="Enter a Positive Integer"
+                                                className="w-80"
+                                                {...register("max_views", {
+                                                    valueAsNumber: true,
+                                                    validate: (value) => {
+                                                        if (value === undefined || Number.isNaN(value)) { return true; }
+                                                        if (!Number.isInteger(value)) { return "Must be an integer"; }
+                                                        if (value <= 0) { return "Must be greater than 0"; }
+                                                        return true;
+                                                    }
+                                                })}
+                                            />
+                                        </div>
+                                        <FieldDescription className="text-red-700">
+                                            {errors.max_views && errors.max_views.message}
+                                        </FieldDescription>
+                                    </Field>
+
+                                    {/* Submit */}
+                                    <Field orientation="horizontal">
+                                        <Button type="reset" variant="outline">
+                                            Reset
+                                        </Button>
+                                        <Button type="submit" className="font-bold">Create New Paste</Button>
+                                    </Field>
+                                </FieldGroup>
+                                {/* <div> */}
+                                {/*     <Button className="font-bold">Create New Paste</Button> */}
+                                {/* </div> */}
+
+                                <div>
+                                    <Field>
+                                        <div className="flex">
+                                            <div className="w-35 mt-2">
+                                                <FieldLabel htmlFor="fieldgroup-link">Shareable Link :</FieldLabel>
+                                            </div>
+                                            <div>
+                                                <Input
+                                                    id="fieldgroup-link"
+                                                    value={shareUrl}
+                                                    readOnly
+                                                    type="text"
+                                                    placeholder="Enter a Positive Integer"
+                                                    onClick={(e) => e.currentTarget.select()}
+                                                    className="bg-gray-100 dark:bg-stone-600"
+                                                />
+                                                <div className="flex w-80 justify-end">
+                                                    <Button type="button" className="mt-2 py-0 dark:bg-violet-400"
+                                                        onClick={() => navigator.clipboard.writeText(shareUrl)}>
+                                                        Copy url
+                                                    </Button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Field>
+                                </div>
+                            </div>
+                        </Field>
+
+                    </form>
+
+                </div>
+            </div>
+        </ThemeProvider>
+    )
 }
 
 export default App
