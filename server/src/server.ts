@@ -1,4 +1,4 @@
-import app from "./app";
+import app from "./index";
 
 
 app.listen(Number(process.env.PORT), () => {
