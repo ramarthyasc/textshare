@@ -8,6 +8,7 @@ import cors from 'cors';
 
 import type { NextFunction, ErrorRequestHandler } from 'express';
 import { apiRouter } from './routers/api.router';
+import { apipasteHtmlGet } from './controllers/api.controller';
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next: NextFunction) => {
     if ((res as any).headersSent) {
@@ -27,6 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 app.use('/api', apiRouter);
+app.get('/p/:id', apipasteHtmlGet);
 
 app.use(errorHandler);
 

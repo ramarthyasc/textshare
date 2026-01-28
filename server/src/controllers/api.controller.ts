@@ -6,6 +6,7 @@ import {
 }
     from "../model/api.queries";
 import { nanoid } from 'nanoid';
+import DOMPurify from "isomorphic-dompurify";
 
 
 export async function apihealthGet(req: Request, res: Response) {
@@ -140,4 +141,79 @@ export async function apipasteGet(req: Request, res: Response, next: NextFunctio
         }
     }
 
+}
+
+
+
+export async function apipasteHtmlGet(req: Request, res: Response, next: NextFunction) {
+
+    const id = req.params.id;
+
+    let pasterows: IPasteGet[] | undefined;
+    if (typeof id === "string") {
+        pasterows = await checkPasteQuery(id);
+    }
+
+    if (!pasterows) {
+        return next(new Error("Database transaction error"));
+    } else if (!pasterows[0]) {
+        return res.status(404).json({ error: "Not found", message: "Paste not found" });
+    } else {
+
+        // If expired
+        if (pasterows[0].expires_at && (pasterows[0].expires_at < new Date())) {
+            return res.status(404).json({ error: "Not found", message: "Paste not found" });
+        }
+
+        // for decrementing views
+        const safeContent = DOMPurify.sanitize(pasterows[0].content);
+
+        const html = `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Paste</title>
+  </head>
+  <body style="
+    margin: 0;
+    padding: 0;
+    background-color: #0d0d0d;
+    color: #eaeaea;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  ">
+    <div style="
+      width: 90%;
+      max-width: 900px;
+    ">
+      <textarea
+        readonly
+        spellcheck="false"
+        style="
+          width: 100%;
+          height: 70vh;
+          background-color: #111;
+          color: #f5f5f5;
+          border: 1px solid #2a2a2a;
+          border-radius: 8px;
+          padding: 16px;
+          font-size: 14px;
+          line-height: 1.6;
+          resize: none;
+          outline: none;
+          box-shadow: 0 0 0 1px rgba(255,255,255,0.02),
+                      0 10px 30px rgba(0,0,0,0.6);
+        "
+      >${safeContent}</textarea>
+    </div>
+  </body>
+</html>`;
+
+        return res.status(200)
+            .set("Content-Type", "text/html; charset=utf-8")
+            .send(html);
+    }
 }

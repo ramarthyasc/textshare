@@ -73,3 +73,6 @@ export async function checkPasteQuery(id: string) {
         client.release();
     }
 }
+
+
+
