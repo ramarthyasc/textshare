@@ -26,10 +26,25 @@ function App() {
     })
     const [shareUrl, setShareUrl] = useState("https://");
 
-    function onSubmit(data: FormValues) {
-        console.log("helooooo")
+    async function onSubmit(data: FormValues) {
         console.log(data);
+        try {
+            const res = await fetch('/api/pastes', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(data),
+            })
+
+            if (res.ok) {
+                const obj = await res.json();
+                setShareUrl(obj.url);
+            }
+        } catch(err) {
+            console.log(err);
+        }
     }
+
     return (
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
             <div className="flex justify-center">
