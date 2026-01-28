@@ -107,7 +107,11 @@ export async function apipasteGet(req: Request, res: Response, next: NextFunctio
     let now: Date;
     if (Number(process.env.TEST_MODE) === 1) {
         const headerMs = req.get('x-test-now-ms');
-        now = new Date(Number(headerMs));
+        if (headerMs) {
+            now = new Date(Number(headerMs));
+        } else {
+            now = new Date();
+        }
     } else {
         now = new Date();
     }
@@ -158,7 +162,11 @@ export async function apipasteHtmlGet(req: Request, res: Response, next: NextFun
     let now: Date;
     if (Number(process.env.TEST_MODE) === 1) {
         const headerMs = req.get('x-test-now-ms');
-        now = new Date(Number(headerMs));
+        if (headerMs) {
+            now = new Date(Number(headerMs));
+        } else {
+            now = new Date();
+        }
     } else {
         now = new Date();
     }
