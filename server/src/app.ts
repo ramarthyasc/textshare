@@ -29,6 +29,9 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
+app.get('/', (req, res) => {
+    return res.json({message: "Server is working"});
+})
 app.use('/api', apiRouter);
 app.get('/p/:id', apipasteHtmlGet);
 
