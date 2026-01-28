@@ -129,7 +129,7 @@ export async function apipasteGet(req: Request, res: Response, next: NextFunctio
 
         // If expired
         if (pasterows[0].expires_at && (pasterows[0].expires_at < now)) {
-            return res.status(404).json({ error: "Not found", message: "Paste not found" });
+            return res.status(404).json({ error: "Not found", message: "Paste expired" });
         }
 
         // for decrementing views
@@ -180,12 +180,49 @@ export async function apipasteHtmlGet(req: Request, res: Response, next: NextFun
     if (!pasterows) {
         return next(new Error("Database transaction error"));
     } else if (!pasterows[0]) {
-        return res.status(404).json({ error: "Not found", message: "Paste not found" });
+        const html = `
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Paste not found</title>
+  <meta name="robots" content="noindex" />
+  <style>
+    body { font-family: system-ui; padding: 3rem; }
+  </style>
+</head>
+<body>
+  <h1>404 – Paste not found</h1>
+</body>
+</html>
+        `
+        return res.status(404)
+            .set("Content-Type", "text/html; charset=utf-8")
+            .send(html);
     } else {
 
         // If expired
         if (pasterows[0].expires_at && (pasterows[0].expires_at < now)) {
-            return res.status(404).json({ error: "Not found", message: "Paste not found" });
+            const htmlExpiry = `
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Paste not found</title>
+  <meta name="robots" content="noindex" />
+  <style>
+    body { font-family: system-ui; padding: 3rem; }
+  </style>
+</head>
+<body>
+  <h1>404 – Paste not found</h1>
+  <div>Paste is expired</div>
+</body>
+</html>
+        `
+            return res.status(404)
+                .set("Content-Type", "text/html; charset=utf-8")
+                .send(htmlExpiry);
         }
 
         // for decrementing views
