@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ThemeProvider } from "@/components/theme-provider"
 import { ModeToggle } from "./components/mode-toggle";
 import { Input } from "@/components/ui/input"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type FormValues = {
     max_views?: number,
@@ -20,6 +20,13 @@ function App() {
         mode: "onChange"
     })
     const [shareUrl, setShareUrl] = useState("https://");
+    const [blink, setBlink] = useState(false);
+
+    useEffect(() => {
+        if (shareUrl !== "https://") {
+            setBlink(true);
+        }
+    }, [shareUrl])
 
     async function onSubmit(data: FormValues) {
         const SERVER_URL = import.meta.env.VITE_SERVER_URL;
@@ -134,10 +141,14 @@ function App() {
                                                     type="text"
                                                     placeholder="Enter a Positive Integer"
                                                     onClick={(e) => e.currentTarget.select()}
+                                                    onMouseEnter={() => setBlink(false)}
                                                     className="bg-gray-100 dark:bg-stone-600"
                                                 />
                                                 <div className="flex w-80 justify-end">
-                                                    <Button type="button" className="mt-2 py-0 dark:bg-violet-400 dark:hover:bg-violet-300"
+                                                    <Button type="button"
+                                                        onMouseEnter={() => setBlink(false)}
+                                                        className={`mt-2 py-0 dark:bg-violet-400 dark:hover:bg-violet-300
+                                                        ${blink ? "bg-green-400 dark:bg-green-400" : ""}`}
                                                         onClick={() => navigator.clipboard.writeText(shareUrl)}>
                                                         Copy url
                                                     </Button>
