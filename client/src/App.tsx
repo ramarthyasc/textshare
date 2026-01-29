@@ -22,8 +22,9 @@ function App() {
     const [shareUrl, setShareUrl] = useState("https://");
 
     async function onSubmit(data: FormValues) {
+        const SERVER_URL = import.meta.env.VITE_SERVER_URL;
         try {
-            const res = await fetch('/api/pastes', {
+            const res = await fetch(`${SERVER_URL}/api/pastes`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
