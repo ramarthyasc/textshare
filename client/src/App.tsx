@@ -29,9 +29,9 @@ function App() {
     }, [shareUrl])
 
     async function onSubmit(data: FormValues) {
-        const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+        // const SERVER_URL = import.meta.env.VITE_SERVER_URL;
         try {
-            const res = await fetch(`${SERVER_URL}/api/pastes`, {
+            const res = await fetch("/api/pastes", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),
