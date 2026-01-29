@@ -20,6 +20,9 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next: NextFunction) =>
 
 
 
+app.use(cors({
+    origin:"https://textshare-client-virid.vercel.app"
+}));
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
@@ -27,9 +30,6 @@ if (process.env.NODE_ENV === "development") {
     app.use(morgan("common"));
 }
 app.use(express.urlencoded({ extended: false }));
-app.use(cors({
-    origin:"https://textshare-client-virid.vercel.app"
-}));
 
 app.get('/', (req, res) => {
     return res.json({message: "Server is working"});
