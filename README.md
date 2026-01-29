@@ -12,6 +12,7 @@ A webapp like Pastebin.. where you can share your notes publically for others to
 - Row locking transactions are used for database queries - thus preventing race conditions that can occur in concurrent requests.
 - Backend built with Express (Node.js) and frontend with React, ensuring separation of concerns for streamlined development and debugging
 - Implemented deterministic expiry testing to simplify the testing process.
+- Deployed the application on Vercel with the backend running as serverless functions.
 
 ## ⚙️ Local Setup :
 1. Clone the repo into a directory
