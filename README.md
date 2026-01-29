@@ -18,7 +18,7 @@ A webapp like Pastebin.. where you can share your notes publically for others to
 ## ⚙️ Local Setup :
 1. Clone the repo into a directory
 2. Navigate to 'server' directory, then run `npm install` - to install the required dependencies for the backend. Then `npm run dev` for running the server at port 5000.
-3. Create a '.env' file inside 'server' directory, and put `NODE_ENV=production`, `DATABASE_URL=<put-your-db-url-here>`, `PORT=5000`
+3. Create a '.env' file inside 'server' directory, and input `NODE_ENV=development`, `DATABASE_URL=<put-your-db-url-here>`, `PORT=5000`
 4. Open a browser and go to [http://localhost:5000/](http://localhost:5000/) for running the server locally.
 5. Now, navigate to 'client' directory, then run `npm install` - to install the required dependencies for the frontend. Then `npm run dev` for running the Vite server at port 5173.
 6. Create a '.env' file inside 'client' directory, and input `VITE_SERVER_URL=http://localhost:5000` (for connecting with the server)
