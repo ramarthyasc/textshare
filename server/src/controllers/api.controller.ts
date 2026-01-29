@@ -6,7 +6,8 @@ import {
 }
     from "../model/api.queries";
 import { nanoid } from 'nanoid';
-import DOMPurify from "isomorphic-dompurify";
+const DOMPurify = require('isomorphic-dompurify');
+
 
 
 export async function apihealthGet(req: Request, res: Response) {
