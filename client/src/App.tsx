@@ -27,7 +27,6 @@ function App() {
             const res = await fetch(`${SERVER_URL}/api/pastes`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                credentials: "include",
                 body: JSON.stringify(data),
             })
 
