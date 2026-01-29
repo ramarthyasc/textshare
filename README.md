@@ -3,8 +3,9 @@ A webapp like Pastebin.. where you can share your notes publically for others to
 
 ## ✨ Features :
 - Clipboard : Where you can type your notes on, and then share.
-- Paste expiry : Users can set the expiry for their pastes/notes.
-- Paste view limit : User can set the view limit for others to view his/her notes.
+- Paste Expiry: Users can set an expiration time for their pastes or notes.
+- Paste View Limit: Allows users to limit how many times others can view their notes.
+- Clip Share: Users can share a clip or paste with others using a unique URL.
 
 ## 🗒️ Design decisions :
 - Chose Supabase-db (postgresql) for persistance, and to ensure the number of database connections stays within safe limits when using serverless deployment -using transaction pooling service.
