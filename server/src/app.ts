@@ -20,10 +20,14 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next: NextFunction) =>
 
 
 
-app.use(cors({
-    origin: "https://textshare-client-virid.vercel.app"
-}));
-app.options("*", cors());
+const corsOptions ={
+    origin: "https://textshare-client-virid.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use(express.json());
 app.use(helmet());
