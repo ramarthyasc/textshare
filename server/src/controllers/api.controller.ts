@@ -5,6 +5,7 @@ import {
     checkPasteQuery,
 }
     from "../model/api.queries";
+import { nanoid } from 'nanoid';
 import DOMPurify from "isomorphic-dompurify";
 
 
@@ -29,7 +30,6 @@ interface IPastes {
 }
 
 export async function apipastesPost(req: Request, res: Response, next: NextFunction) {
-    const { nanoid } = await import("nanoid");
     const pastes: IPastes = req.body;
 
     // Error responses

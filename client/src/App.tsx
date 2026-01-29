@@ -142,7 +142,7 @@ function App() {
                                                     className="bg-gray-100 dark:bg-stone-600"
                                                 />
                                                 <div className="flex w-80 justify-end">
-                                                    <Button type="button" className="mt-2 py-0 dark:bg-violet-400"
+                                                    <Button type="button" className="mt-2 py-0 dark:bg-violet-400 dark:hover:bg-violet-300"
                                                         onClick={() => navigator.clipboard.writeText(shareUrl)}>
                                                         Copy url
                                                     </Button>
