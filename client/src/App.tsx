@@ -1,17 +1,12 @@
 import { useForm } from "react-hook-form";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Textarea } from "@/components/ui/textarea";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { ThemeProvider } from "@/components/theme-provider"
 import { ModeToggle } from "./components/mode-toggle";
 import { Input } from "@/components/ui/input"
 import { useState } from "react";
 
-interface IPastes {
-    content: string;
-    ttl_seconds?: number;
-    max_views?: number;
-}
 type FormValues = {
     max_views?: number,
     ttl_seconds?: number,
@@ -20,7 +15,7 @@ type FormValues = {
 
 function App() {
 
-    const { register, handleSubmit, formState: { errors, isValid } } = useForm<FormValues>({
+    const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
         defaultValues: { max_views: undefined, ttl_seconds: undefined },
         mode: "onChange"
     })
@@ -39,7 +34,7 @@ function App() {
                 const obj = await res.json();
                 setShareUrl(obj.url);
             }
-        } catch(err) {
+        } catch (err) {
             console.log(err);
         }
     }
