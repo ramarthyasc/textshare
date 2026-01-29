@@ -6,7 +6,7 @@ import {
 }
     from "../model/api.queries";
 import { nanoid } from 'nanoid';
-const DOMPurify = require('isomorphic-dompurify');
+const escape = require('escape-html');
 
 
 
@@ -227,7 +227,7 @@ export async function apipasteHtmlGet(req: Request, res: Response, next: NextFun
         }
 
         // for decrementing views
-        const safeContent = DOMPurify.sanitize(pasterows[0].content);
+        const safeContent = escape(pasterows[0].content);
 
         const html = `<!DOCTYPE html>
 <html>
