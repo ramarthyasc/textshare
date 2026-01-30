@@ -1,5 +1,5 @@
 # 📋 Textshare
-A webapp like Pastebin.. where you can share your notes publically for others to view and share.
+A webapp like Pastebin.. where you can share your notes publicly for others to view and share.
 
 ## ✨ Features :
 - Clipboard : Where you can type your notes on, and then share.
