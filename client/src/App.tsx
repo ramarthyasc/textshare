@@ -49,16 +49,16 @@ function App() {
     return (
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
             <div className="flex justify-center">
-                <div className="relative w-100 md:w-300">
-                    <div className="absolute left-90 top-5 md:left-290">
+                <div className="relative w-80 md:border md:p-10 md:top-10 md:w-300">
+                    <div className="absolute left-71 top-5 md:top-10 md:left-280">
                         <ModeToggle />
                     </div>
 
 
                     <form action="submit" onSubmit={handleSubmit(onSubmit)}>
-                        <Field className="mt-5">
+                        <Field className="mt-5 md:mt-0">
                             <FieldLabel htmlFor="textarea-message" className="text-2xl font-bold">New Paste</FieldLabel>
-                            <Textarea className="h-100" id="textarea-message" placeholder="Type your paste here."
+                            <Textarea className="h-100" id="textarea-message" placeholder="Type your content here..."
                                 {...register("content", {
                                     required: "Content is required",
                                 })}
@@ -66,11 +66,12 @@ function App() {
                             <FieldDescription className="text-red-700">
                                 {errors.content?.message}
                             </FieldDescription>
-                            <div className="flex">
+                            <div className="flex flex-col md:flex md:flex-row">
                                 {/* Expire */}
                                 <FieldGroup>
                                     <Field>
-                                        <FieldLabel htmlFor="fieldgroup-expire">Paste Expiration (Seconds):</FieldLabel>
+                                        <FieldLabel htmlFor="fieldgroup-expire"
+                                            className="w-80! md:w-auto">Paste Expiration (seconds):</FieldLabel>
                                         <div>
                                             <Input
                                                 className="w-80" type="number" id="fieldgroup-expire"
@@ -92,7 +93,8 @@ function App() {
                                     </Field>
                                     {/* View */}
                                     <Field>
-                                        <FieldLabel htmlFor="fieldgroup-integer">Paste View limit:</FieldLabel>
+                                        <FieldLabel htmlFor="fieldgroup-integer" className="w-80! md:w-auto">
+                                            Paste View limit:</FieldLabel>
                                         <div>
                                             <Input
                                                 id="fieldgroup-integer"
@@ -129,9 +131,9 @@ function App() {
 
                                 <div>
                                     <Field>
-                                        <div className="flex">
-                                            <div className="w-35 mt-2">
-                                                <FieldLabel htmlFor="fieldgroup-link">Shareable Link :</FieldLabel>
+                                        <div className="flex flex-col md:flex md:flex-row">
+                                            <div className="mt-10 mb-2 md:mb-0 md:w-35 md:mt-2">
+                                                <FieldLabel htmlFor="fieldgroup-link" className="font-bold">Shareable Link :</FieldLabel>
                                             </div>
                                             <div>
                                                 <Input
@@ -144,7 +146,7 @@ function App() {
                                                     onMouseEnter={() => setBlink(false)}
                                                     className="bg-gray-100 dark:bg-stone-600"
                                                 />
-                                                <div className="flex w-80 justify-end">
+                                                <div className="md:flex md:w-80 md:justify-end">
                                                     <Button type="button"
                                                         onMouseEnter={() => setBlink(false)}
                                                         className={`mt-2 py-0 dark:bg-violet-400 dark:hover:bg-violet-300
@@ -152,6 +154,9 @@ function App() {
                                                         onClick={() => navigator.clipboard.writeText(shareUrl)}>
                                                         Copy url
                                                     </Button>
+                                                    <div className="py-10 md:hidden">
+
+                                                    </div>
 
                                                 </div>
                                             </div>
